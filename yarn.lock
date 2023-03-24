@@ -6892,9 +6892,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gatsby-source-note@workspace:.":
+"gatsby-source-note-com@workspace:packages/gatsby-source-note-com":
   version: 0.0.0-use.local
-  resolution: "gatsby-source-note@workspace:."
+  resolution: "gatsby-source-note-com@workspace:packages/gatsby-source-note-com"
   dependencies:
     "@babel/cli": ^7.19.3
     "@babel/core": ^7.20.5
@@ -9439,6 +9439,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"note-com-js@workspace:packages/note-com-js":
+  version: 0.0.0-use.local
+  resolution: "note-com-js@workspace:packages/note-com-js"
+  languageName: unknown
+  linkType: soft
+
 "npm-run-path@npm:^2.0.0":
   version: 2.0.2
   resolution: "npm-run-path@npm:2.0.2"
@@ -10466,6 +10472,12 @@ __metadata:
   checksum: f67403fe7b34912148d9252cb7481266a354bd99ce82c835f79070643bb3c6583d10dbcfda4d41e04bbc1d8437e9af0fb1e1f2135727878f5308682a579429b7
   languageName: node
   linkType: hard
+
+"project@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "project@workspace:."
+  languageName: unknown
+  linkType: soft
 
 "promise-inflight@npm:^1.0.1":
   version: 1.0.1

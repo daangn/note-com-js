@@ -4,9 +4,5 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "strict": true
-  },
-  "include": [
-    "src"
-  ],
-  "exclude": []
+  }
 }
