@@ -1,4 +1,4 @@
-import { GatsbyNode } from 'gatsby';
+import { type GatsbyNode } from 'gatsby';
 
 export const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] = ({
   actions,
@@ -25,7 +25,7 @@ export const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] 
       summary: String!
       bodyHtml: String!
       likeCount: Int!
-      publishedAt: Date!
+      publishedAt: Date! @dateformat(formatString: "YYYY-MM-DD")
       hashtags: [String!]!
       categories: [NoteCategory!]!
       authors: [NoteUser!]!
