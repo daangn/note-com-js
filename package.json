@@ -6,7 +6,7 @@
     "packages/**"
   ],
   "scripts": {
-    "format": "rome format . --write"
+    "format": "rome format packages --write"
   },
   "devDependencies": {
     "rome": "^11.0.0",

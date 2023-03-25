@@ -1,0 +1,27 @@
+{
+  "linter": {
+    "enabled": false,
+    "rules": {
+      "recommended": true
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": true,
+    "indentStyle": "space",
+    "indentSize": 2,
+    "lineWidth": 100
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "trailingComma": "all",
+      "semicolons": "always"
+    }
+  },
+  "files": {
+    "ignore": [
+      "**/dist/**/*"
+    ]
+  }
+}
