@@ -12,3 +12,5 @@ node_modules/
 
 /*.js
 !/index.js
+
+dist

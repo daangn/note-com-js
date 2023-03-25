@@ -1,4 +1,25 @@
 {
   "name": "note-com-js",
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "nanobundle build"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "devDependencies": {
+    "nanobundle": "^1.6.0",
+    "typescript": "^4.9.3"
+  }
 }
