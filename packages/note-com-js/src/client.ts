@@ -1,3 +1,5 @@
+import type { User, Note, Contents } from "./types";
+
 import { CREATOR, END_POINT_V1, END_POINT_V2 } from "./constants";
 
 export function makeNoteApiClient() {
@@ -7,8 +9,9 @@ export function makeNoteApiClient() {
 
       try {
         const response = await fetch(endpoint);
-        const data = await response.json();
-        return data;
+        return (await response.json()) as {
+          data: User;
+        };
       } catch (e) {
         throw new Error(`Failed to fetch user data from ${endpoint}`);
       }
@@ -18,8 +21,9 @@ export function makeNoteApiClient() {
 
       try {
         const response = await fetch(endpoint);
-        const data = await response.json();
-        return data;
+        return (await response.json()) as {
+          data: Note;
+        };
       } catch (e) {
         throw new Error(`Failed to fetch note text data from ${endpoint}`);
       }
@@ -29,8 +33,9 @@ export function makeNoteApiClient() {
 
       try {
         const response = await fetch(endpoint);
-        const data = await response.json();
-        return data;
+        return (await response.json()) as {
+          data: Contents;
+        };
       } catch (e) {
         throw new Error(`Failed to fetch note contents data from ${endpoint}`);
       }
