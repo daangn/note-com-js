@@ -1,10 +1,19 @@
 {
   "name": "gatsby-source-note-com",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "files": [
+    "*.js"
+  ],
   "scripts": {
     "build": "babel src -d . -x .ts --presets gatsby-package"
   },
   "peerDependencies": {
     "gatsby": "^4.0.0 || ^5.0.0"
+  },
+  "dependencies": {
+    "note-com-js": "workspace:^"
   },
   "devDependencies": {
     "@babel/cli": "^7.19.3",
