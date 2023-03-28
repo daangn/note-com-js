@@ -17,6 +17,9 @@
     "dist",
     "src"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "nanobundle": "^1.6.0",
     "typescript": "^4.9.3"
