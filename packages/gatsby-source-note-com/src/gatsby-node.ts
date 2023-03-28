@@ -1,5 +1,10 @@
 import type { NodeInput, GatsbyNode } from "gatsby";
-import { makeNoteApiClient } from "note-com-js";
+import {
+  type EmbeddedContent,
+  type HashtagNote,
+  type Picture,
+  makeNoteApiClient,
+} from "note-com-js";
 
 import type { NoteUserNodeSource, NoteTextNoteNodeSource, PluginOptions } from "./types";
 
@@ -39,6 +44,14 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
           type: "String!",
           resolve: (source: NoteTextNoteNodeSource) => source.key,
         },
+        userId: {
+          type: "Int!",
+          resolve: (source: NoteTextNoteNodeSource) => source.user_id,
+        },
+        readingUuid: {
+          type: "String!",
+          resolve: (source: NoteTextNoteNodeSource) => source.reading_uuid,
+        },
         title: {
           type: "String!",
           resolve: (source: NoteTextNoteNodeSource) => source.name,
@@ -46,6 +59,10 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
         bodyHtml: {
           type: "String!",
           resolve: (source: NoteTextNoteNodeSource) => source.body,
+        },
+        eyecatch: {
+          type: "String!",
+          resolve: (source: NoteTextNoteNodeSource) => source.eyecatch,
         },
         author: {
           type: "NoteUser!",
@@ -62,13 +79,41 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
             });
           },
         },
+        hashtags: {
+          type: "[NoteHashtag!]!",
+          resolve: (source: NoteTextNoteNodeSource) => source.hashtag_notes,
+        },
+        pictures: {
+          type: "[NotePicture!]!",
+          resolve: (source: NoteTextNoteNodeSource) => source.pictures,
+        },
+        embeddedContents: {
+          type: "[NoteEmbeddedContent!]!",
+          resolve: (source: NoteTextNoteNodeSource) => source.embedded_contents,
+        },
+        likeCount: {
+          type: "Int!",
+          resolve: (source: NoteTextNoteNodeSource) => source.like_count,
+        },
+        anonymousLikeCount: {
+          type: "Int!",
+          resolve: (source: NoteTextNoteNodeSource) => source.anonymous_like_count,
+        },
+        commentCount: {
+          type: "Int!",
+          resolve: (source: NoteTextNoteNodeSource) => source.comment_count,
+        },
+        tweetText: {
+          type: "String!",
+          resolve: (source: NoteTextNoteNodeSource) => source.tweet_text,
+        },
         publishedAt: {
           type: "Date!",
           resolve: (source: NoteTextNoteNodeSource) => new Date(source.publish_at),
         },
-        eyecatchImageUrl: {
+        noteUrl: {
           type: "String!",
-          resolve: (source: NoteTextNoteNodeSource) => source.eyecatch,
+          resolve: (source: NoteTextNoteNodeSource) => source.note_url,
         },
         noteShareUrl: {
           type: "String!",
@@ -86,6 +131,152 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
           type: "String!",
           resolve: (source: NoteTextNoteNodeSource) => source.line_share_url,
         },
+        popularSiblingNotes: {
+          type: "[NoteTextNote!]!",
+          async resolve(source: NoteTextNoteNodeSource, _args, context) {
+            const { entries } = await context.nodeModel.findAll({
+              type: "NoteTextNote",
+              query: {
+                filter: {
+                  noteId: {
+                    in: source.popular_sibling_notes.map((note) => note.id.toString()),
+                  },
+                },
+              },
+            });
+            return entries;
+          },
+        },
+        prevNote: {
+          type: "NoteTextNote",
+          resolve(source: NoteTextNoteNodeSource, _args, context) {
+            return context.nodeModel.findOne({
+              type: "NoteTextNote",
+              query: {
+                filter: {
+                  noteId: {
+                    eq: source.prev_note?.id.toString() ?? null,
+                  },
+                },
+              },
+            });
+          },
+        },
+        nextNote: {
+          type: "NoteTextNote",
+          resolve(source: NoteTextNoteNodeSource, _args, context) {
+            return context.nodeModel.findOne({
+              type: "NoteTextNote",
+              query: {
+                filter: {
+                  noteId: {
+                    eq: source.next_note?.id.toString() ?? null,
+                  },
+                },
+              },
+            });
+          },
+        },
+      },
+    }),
+    schema.buildObjectType({
+      name: "NotePicture",
+      extensions: {
+        infer: false,
+      },
+      fields: {
+        key: {
+          type: "String!",
+          resolve: (source: Picture) => source.key,
+        },
+        url: {
+          type: "String!",
+          resolve: (source: Picture) => source.url,
+        },
+        thumbnailUrl: {
+          type: "String!",
+          resolve: (source: Picture) => source.thumbnail_url,
+        },
+        alt: {
+          type: "String!",
+          resolve: (source: Picture) => source.alt,
+        },
+        caption: {
+          type: "String",
+          resolve: (source: Picture) => source.caption,
+        },
+        width: {
+          type: "Int",
+          resolve: (source: Picture) => source.width,
+        },
+        height: {
+          type: "Int",
+          resolve: (source: Picture) => source.height,
+        },
+      },
+    }),
+    schema.buildObjectType({
+      name: "NoteEmbeddedContent",
+      extensions: {
+        infer: false,
+      },
+      fields: {
+        key: {
+          type: "String!",
+          resolve: (source: EmbeddedContent) => source.key,
+        },
+        url: {
+          type: "String!",
+          resolve: (source: EmbeddedContent) => source.url,
+        },
+        embedHtml: {
+          type: "String",
+          resolve: (source: EmbeddedContent) => source.html_for_embed,
+        },
+        displayHtml: {
+          type: "String",
+          resolve: (source: EmbeddedContent) => source.html_for_display,
+        },
+        embeddableType: {
+          type: "String!",
+          resolve: (source: EmbeddedContent) => source.embeddable_type,
+        },
+        service: {
+          type: "String!",
+          resolve: (source: EmbeddedContent) => source.service,
+        },
+        identifier: {
+          type: "String",
+          resolve: (source: EmbeddedContent) => source.identifier,
+        },
+        caption: {
+          type: "String",
+          resolve: (source: EmbeddedContent) => source.caption,
+        },
+        createdAt: {
+          type: "Date!",
+          resolve: (source: EmbeddedContent) => source.created_at,
+        },
+      },
+    }),
+    schema.buildObjectType({
+      name: "NoteHashtag",
+      extensions: {
+        infer: false,
+      },
+      fields: {
+        id: {
+          type: "String!",
+          resolve: (source: HashtagNote) => source.id.toString(),
+        },
+        createdAt: {
+          type: "Date!",
+          resolve: (source: HashtagNote) => source.created_at,
+        },
+        name: {
+          type: "String!",
+          resolve: (source: HashtagNote) => source.hashtag.name,
+        },
       },
     }),
   ]);
@@ -101,10 +292,9 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
   const client = makeNoteApiClient();
 
   const user = await client.getUser(creator);
-  const contents = await Promise.all(
-    (
-      await client.getUserContents(creator)
-    ).contents.map((content) => {
+  const contents = await client.getUserContents(creator);
+  const noteTexts = await Promise.all(
+    contents.map((content) => {
       return client.getNoteText(content.key);
     }),
   );
@@ -123,19 +313,19 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
 
   createNode(userNode);
 
-  const contentsNodes: Array<NodeInput & NoteTextNoteNodeSource> = contents.map((content) => ({
-    ...content,
-    noteId: content.id,
-    id: createNodeId(`NoteTextNote-${content.id}`),
+  const noteTextsNode: Array<NodeInput & NoteTextNoteNodeSource> = noteTexts.map((noteText) => ({
+    ...noteText,
+    noteId: noteText.id,
+    id: createNodeId(`NoteTextNote-${noteText.id}`),
     parent: null,
     children: [],
     internal: {
       type: "NoteTextNote",
-      contentDigest: createContentDigest(content),
+      contentDigest: createContentDigest(noteText),
     },
   }));
 
-  for (const contentsNode of contentsNodes) {
-    createNode(contentsNode);
+  for (const noteTextNode of noteTextsNode) {
+    createNode(noteTextNode);
   }
 };
