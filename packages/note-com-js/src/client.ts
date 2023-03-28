@@ -14,7 +14,7 @@ export function makeNoteApiClient() {
         };
         return data;
       } catch (e) {
-        throw new Error(`Failed to fetch user data from ${endpoint}`);
+        throw new Error(`Failed to fetch user data from note.com`);
       }
     },
     async getNoteText(key: string) {
@@ -27,7 +27,7 @@ export function makeNoteApiClient() {
         };
         return data;
       } catch (e) {
-        throw new Error(`Failed to fetch note text data from ${endpoint}`);
+        throw new Error(`Failed to fetch note text data from note.com`);
       }
     },
     async getUserContents(creator: string) {
@@ -38,10 +38,36 @@ export function makeNoteApiClient() {
         const { data } = (await response.json()) as {
           data: Contents;
         };
-        return data;
+        const lastPageIndex = Math.ceil(data.totalCount / 6);
+
+        if (data.isLastPage && lastPageIndex === 1) {
+          return [...data.contents];
+        }
+
+        const endpoints = Array.from({ length: lastPageIndex }, (v, k) => {
+          if (!!k) {
+            return `${endpoint}&page=${k + 1}`;
+          }
+        }).slice(1) as string[];
+
+        const restData = await Promise.all(endpoints.map((ep) => fetch(ep)))
+          .then((responses) =>
+            Promise.all(
+              responses.map(
+                (r) =>
+                  r.json() as Promise<{
+                    data: Contents;
+                  }>,
+              ),
+            ),
+          )
+          .then((responses) => [...data.contents, ...responses.map((r) => r.data.contents).flat()]);
+
+        return restData;
       } catch (e) {
-        throw new Error(`Failed to fetch note contents data from ${endpoint}`);
+        throw new Error(`Failed to fetch note contents data from note.com`);
       }
     },
+    // TODO: Sourcing categories
   };
 }
