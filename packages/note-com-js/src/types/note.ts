@@ -46,8 +46,8 @@ export type Note = {
   belonging_magazine_keys: string[];
   embedded_contents: EmbeddedContent[];
   has_coupon: boolean;
-  prev_note: NoteLink;
-  next_note: NoteLink;
+  prev_note: NoteLink | null;
+  next_note: NoteLink | null;
   popular_sibling_notes: NoteLink[];
   note_related_notes: NoteLink[];
   related_contests: ContestLink[];
