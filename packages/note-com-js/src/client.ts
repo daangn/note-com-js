@@ -1,17 +1,18 @@
 import type { User, Note, Contents } from "./types";
 
-import { CREATOR, END_POINT_V1, END_POINT_V2 } from "./constants";
+import { END_POINT_V1, END_POINT_V2 } from "./constants";
 
 export function makeNoteApiClient() {
   return {
-    async getUser() {
-      const endpoint = `${END_POINT_V2}/creators/${CREATOR}`;
+    async getUser(creator: string) {
+      const endpoint = `${END_POINT_V2}/creators/${creator}`;
 
       try {
         const response = await fetch(endpoint);
-        return (await response.json()) as {
+        const { data } = (await response.json()) as {
           data: User;
         };
+        return data;
       } catch (e) {
         throw new Error(`Failed to fetch user data from ${endpoint}`);
       }
@@ -21,21 +22,23 @@ export function makeNoteApiClient() {
 
       try {
         const response = await fetch(endpoint);
-        return (await response.json()) as {
+        const { data } = (await response.json()) as {
           data: Note;
         };
+        return data;
       } catch (e) {
         throw new Error(`Failed to fetch note text data from ${endpoint}`);
       }
     },
-    async getUserContents() {
-      const endpoint = `${END_POINT_V2}/creators/${CREATOR}/contents?kind=note`;
+    async getUserContents(creator: string) {
+      const endpoint = `${END_POINT_V2}/creators/${creator}/contents?kind=note`;
 
       try {
         const response = await fetch(endpoint);
-        return (await response.json()) as {
+        const { data } = (await response.json()) as {
           data: Contents;
         };
+        return data;
       } catch (e) {
         throw new Error(`Failed to fetch note contents data from ${endpoint}`);
       }
