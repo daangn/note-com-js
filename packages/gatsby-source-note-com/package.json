@@ -1,6 +1,7 @@
 {
   "name": "gatsby-source-note-com",
   "version": "0.0.0",
+  "license": "MIT",
   "main": "index.js",
   "files": [
     "*.js"
