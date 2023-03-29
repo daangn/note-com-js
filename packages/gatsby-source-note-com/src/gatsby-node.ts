@@ -80,15 +80,15 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
           },
         },
         hashtags: {
-          type: "[NoteHashtag!]!",
+          type: "[NoteTextNoteHashtag!]!",
           resolve: (source: NoteTextNoteNodeSource) => source.hashtag_notes,
         },
         pictures: {
-          type: "[NotePicture!]!",
+          type: "[NoteTextNotePicture!]!",
           resolve: (source: NoteTextNoteNodeSource) => source.pictures,
         },
         embeddedContents: {
-          type: "[NoteEmbeddedContent!]!",
+          type: "[NoteTextNoteEmbeddedContent!]!",
           resolve: (source: NoteTextNoteNodeSource) => source.embedded_contents,
         },
         likeCount: {
@@ -180,7 +180,7 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
       },
     }),
     schema.buildObjectType({
-      name: "NotePicture",
+      name: "NoteTextNotePicture",
       extensions: {
         infer: false,
       },
@@ -216,7 +216,7 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
       },
     }),
     schema.buildObjectType({
-      name: "NoteEmbeddedContent",
+      name: "NoteTextNoteEmbeddedContent",
       extensions: {
         infer: false,
       },
@@ -260,7 +260,7 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
       },
     }),
     schema.buildObjectType({
-      name: "NoteHashtag",
+      name: "NoteTextNoteHashtag",
       extensions: {
         infer: false,
       },
@@ -271,7 +271,7 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
         },
         createdAt: {
           type: "Date!",
-          resolve: (source: HashtagNote) => source.created_at,
+          resolve: (source: HashtagNote) => new Date(source.created_at),
         },
         name: {
           type: "String!",

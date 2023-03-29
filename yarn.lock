@@ -10001,6 +10001,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"note-js@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "note-js@workspace:."
+  dependencies:
+    rome: ^11.0.0
+    typescript: ^4.9.3
+  languageName: unknown
+  linkType: soft
+
 "npm-run-path@npm:^2.0.0":
   version: 2.0.2
   resolution: "npm-run-path@npm:2.0.2"
@@ -11060,15 +11069,6 @@ __metadata:
   checksum: f67403fe7b34912148d9252cb7481266a354bd99ce82c835f79070643bb3c6583d10dbcfda4d41e04bbc1d8437e9af0fb1e1f2135727878f5308682a579429b7
   languageName: node
   linkType: hard
-
-"project@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "project@workspace:."
-  dependencies:
-    rome: ^11.0.0
-    typescript: ^4.9.3
-  languageName: unknown
-  linkType: soft
 
 "promise-inflight@npm:^1.0.1":
   version: 1.0.1
