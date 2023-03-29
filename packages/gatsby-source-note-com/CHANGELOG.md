@@ -1,5 +1,11 @@
 # gatsby-source-note-com
 
+## 0.0.4
+
+### Patch Changes
+
+- 15148eb: add type declaration
+
 ## 0.0.3
 
 ### Patch Changes
