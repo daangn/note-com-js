@@ -16,7 +16,7 @@
     "gatsby": "^4.0.0 || ^5.0.0"
   },
   "dependencies": {
-    "note-com-js": "workspace:^0.0.1"
+    "note-com-js": "^0.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.19.3",
