@@ -1,5 +1,11 @@
 # gatsby-source-note-com
 
+## 0.0.3
+
+### Patch Changes
+
+- 1960de6: specify note-com-js version
+
 ## 0.0.2
 
 ### Patch Changes
