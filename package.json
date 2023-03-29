@@ -1,13 +1,16 @@
 {
   "name": "note-js",
   "version": "0.0.0",
+  "license": "MIT",
   "private": true,
   "packageManager": "yarn@3.3.0",
   "workspaces": [
     "packages/**"
   ],
   "scripts": {
-    "format": "rome format packages --write"
+    "format": "rome format packages --write",
+    "build:package": "yarn workspaces foreach -t run build",
+    "release": "yarn build:package && yarn changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",
