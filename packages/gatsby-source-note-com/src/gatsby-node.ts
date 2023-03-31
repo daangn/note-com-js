@@ -6,7 +6,12 @@ import {
   makeNoteApiClient,
 } from "note-com-js";
 
-import type { NoteUserNodeSource, NoteTextNoteNodeSource, PluginOptions } from "./types";
+import type {
+  NoteUserNodeSource,
+  NoteTextNoteNodeSource,
+  PluginOptions,
+  NoteContentNodeSource,
+} from "./types";
 
 export const pluginOptionsSchema: GatsbyNode["pluginOptionsSchema"] = ({ Joi }) => {
   return Joi.object({
@@ -26,6 +31,16 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
         userId: {
           type: "String!",
           resolve: (source: NoteUserNodeSource) => source.userId.toString(),
+        },
+      },
+    }),
+    schema.buildObjectType({
+      name: "NoteContent",
+      interfaces: ["Node"],
+      fields: {
+        noteId: {
+          type: "String!",
+          resolve: (source: NoteContentNodeSource) => source.noteId.toString(),
         },
       },
     }),
@@ -52,7 +67,7 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
           type: "String!",
           resolve: (source: NoteTextNoteNodeSource) => source.reading_uuid,
         },
-        title: {
+        name: {
           type: "String!",
           resolve: (source: NoteTextNoteNodeSource) => source.name,
         },
@@ -292,10 +307,10 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
   const client = makeNoteApiClient();
 
   const user = await client.getUser(creator);
-  const contents = await client.getUserContents(creator);
-  const noteTexts = await Promise.all(
+  const contents = await client.getAllUserContents(creator);
+  const notes = await Promise.all(
     contents.map((content) => {
-      return client.getNoteText(content.key);
+      return client.getNote(content.key);
     }),
   );
 
@@ -313,19 +328,35 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
 
   createNode(userNode);
 
-  const noteTextsNode: Array<NodeInput & NoteTextNoteNodeSource> = noteTexts.map((noteText) => ({
-    ...noteText,
-    noteId: noteText.id,
-    id: createNodeId(`NoteTextNote-${noteText.id}`),
+  const textNoteNodes: Array<NodeInput & NoteTextNoteNodeSource> = notes.map((note) => ({
+    ...note,
+    noteId: note.id,
+    id: createNodeId(`NoteTextNote-${note.id}`),
     parent: null,
     children: [],
     internal: {
       type: "NoteTextNote",
-      contentDigest: createContentDigest(noteText),
+      contentDigest: createContentDigest(note),
     },
   }));
 
-  for (const noteTextNode of noteTextsNode) {
-    createNode(noteTextNode);
+  for (const textNoteNode of textNoteNodes) {
+    createNode(textNoteNode);
+  }
+
+  const contentNodes: Array<NodeInput & NoteContentNodeSource> = contents.map((content) => ({
+    ...content,
+    noteId: content.id,
+    id: createNodeId(`NoteContent-${content.id}`),
+    parent: null,
+    children: [],
+    internal: {
+      type: "NoteContent",
+      contentDigest: createContentDigest(content),
+    },
+  }));
+
+  for (const contentNode of contentNodes) {
+    createNode(contentNode);
   }
 };
