@@ -17,7 +17,7 @@ export function makeNoteApiClient() {
         throw new Error(`Failed to fetch user data from note.com`);
       }
     },
-    async getNoteText(key: string) {
+    async getNote(key: string) {
       const endpoint = `${END_POINT_V1}/notes/${key}`;
 
       try {
@@ -31,6 +31,20 @@ export function makeNoteApiClient() {
       }
     },
     async getUserContents(creator: string) {
+      const endpoint = `${END_POINT_V2}/creators/${creator}/contents?kind=note`;
+
+      try {
+        const response = await fetch(endpoint);
+        const { data } = (await response.json()) as {
+          data: Contents;
+        };
+
+        return data;
+      } catch (e) {
+        throw new Error(`Failed to fetch note contents data from note.com`);
+      }
+    },
+    async getAllUserContents(creator: string) {
       const endpoint = `${END_POINT_V2}/creators/${creator}/contents?kind=note`;
 
       try {
