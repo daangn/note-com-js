@@ -1,5 +1,11 @@
 # note-com-js
 
+## 0.0.3
+
+### Patch Changes
+
+- e6afe13: handle api versioning
+
 ## 0.0.2
 
 ### Patch Changes

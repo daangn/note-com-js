@@ -1,5 +1,13 @@
 # gatsby-source-note-com
 
+## 0.0.6
+
+### Patch Changes
+
+- e6afe13: handle api versioning
+- Updated dependencies [e6afe13]
+  - note-com-js@0.0.3
+
 ## 0.0.5
 
 ### Patch Changes
