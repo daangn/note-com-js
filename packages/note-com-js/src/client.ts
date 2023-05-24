@@ -1,11 +1,11 @@
 import type { User, Note, Contents } from "./types";
 
-import { END_POINT_V1, END_POINT_V2 } from "./constants";
+import { END_POINT } from "./constants";
 
 export function makeNoteApiClient() {
   return {
     async getUser(creator: string) {
-      const endpoint = `${END_POINT_V2}/creators/${creator}`;
+      const endpoint = `${END_POINT}/v2/creators/${creator}`;
 
       try {
         const response = await fetch(endpoint);
@@ -18,7 +18,7 @@ export function makeNoteApiClient() {
       }
     },
     async getNote(key: string) {
-      const endpoint = `${END_POINT_V1}/notes/${key}`;
+      const endpoint = `${END_POINT}/v3/notes/${key}`;
 
       try {
         const response = await fetch(endpoint);
@@ -31,7 +31,7 @@ export function makeNoteApiClient() {
       }
     },
     async getUserContents(creator: string) {
-      const endpoint = `${END_POINT_V2}/creators/${creator}/contents?kind=note`;
+      const endpoint = `${END_POINT}/v2/creators/${creator}/contents?kind=note`;
 
       try {
         const response = await fetch(endpoint);
@@ -45,7 +45,7 @@ export function makeNoteApiClient() {
       }
     },
     async getAllUserContents(creator: string) {
-      const endpoint = `${END_POINT_V2}/creators/${creator}/contents?kind=note`;
+      const endpoint = `${END_POINT}/v2/creators/${creator}/contents?kind=note`;
 
       try {
         const response = await fetch(endpoint);
