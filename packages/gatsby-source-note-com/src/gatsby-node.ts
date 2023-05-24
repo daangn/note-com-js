@@ -328,33 +328,37 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
 
   createNode(userNode);
 
-  const textNoteNodes: Array<NodeInput & NoteTextNoteNodeSource> = notes.map((note) => ({
-    ...note,
-    noteId: note.id,
-    id: createNodeId(`NoteTextNote-${note.id}`),
-    parent: null,
-    children: [],
-    internal: {
-      type: "NoteTextNote",
-      contentDigest: createContentDigest(note),
-    },
-  }));
+  const textNoteNodes: Array<NodeInput & NoteTextNoteNodeSource> = notes
+    .filter(Boolean)
+    .map((note) => ({
+      ...note,
+      noteId: note.id,
+      id: createNodeId(`NoteTextNote-${note.id}`),
+      parent: null,
+      children: [],
+      internal: {
+        type: "NoteTextNote",
+        contentDigest: createContentDigest(note),
+      },
+    }));
 
   for (const textNoteNode of textNoteNodes) {
     createNode(textNoteNode);
   }
 
-  const contentNodes: Array<NodeInput & NoteContentNodeSource> = contents.map((content) => ({
-    ...content,
-    noteId: content.id,
-    id: createNodeId(`NoteContent-${content.id}`),
-    parent: null,
-    children: [],
-    internal: {
-      type: "NoteContent",
-      contentDigest: createContentDigest(content),
-    },
-  }));
+  const contentNodes: Array<NodeInput & NoteContentNodeSource> = contents
+    .filter(Boolean)
+    .map((content) => ({
+      ...content,
+      noteId: content.id,
+      id: createNodeId(`NoteContent-${content.id}`),
+      parent: null,
+      children: [],
+      internal: {
+        type: "NoteContent",
+        contentDigest: createContentDigest(content),
+      },
+    }));
 
   for (const contentNode of contentNodes) {
     createNode(contentNode);
